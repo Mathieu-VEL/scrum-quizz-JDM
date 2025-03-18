@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Questionnaire par Page avec Timer</title>
+    <script src="./test.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .question-page {
+            display: none;
+        }
+
+        .timer {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Quiz avec Correction</h1>
+
+    <!-- Page de la question 1 -->
+    <div id="question1" class="question-page">
+        <p>1. Quels fruits aimez-vous ?</p>
+        <label><input type="checkbox" name="fruit" value="Pomme"> Pomme</label><br>
+        <label><input type="checkbox" name="fruit" value="Banane"> Banane</label><br>
+        <label><input type="checkbox" name="fruit" value="Orange"> Orange</label><br>
+        <label><input type="checkbox" name="fruit" value="Fraise"> Fraise</label>
+        <div id="timer1" class="timer"></div>
+        <br>
+        <button type="button" onclick="nextQuestion()">Valider</button>
+    </div>
+
+    <!-- Page de la question 2 -->
+    <div id="question2" class="question-page">
+        <p>2. Quels sports pratiquez-vous ?</p>
+        <label><input type="checkbox" name="sport" value="Football"> Football</label><br>
+        <label><input type="checkbox" name="sport" value="Basketball"> Basketball</label><br>
+        <label><input type="checkbox" name="sport" value="Natation"> Natation</label><br>
+        <label><input type="checkbox" name="sport" value="Cyclisme"> Cyclisme</label>
+        <div id="timer2" class="timer"></div>
+        <br>
+        <button type="button" onclick="nextQuestion()">Valider</button>
+    </div>
+
+    <!-- Page finale -->
+    <div id="result" style="display:none;">
+        <h2>Merci d'avoir répondu !</h2>
+        <p>Vos réponses ont été enregistrées et téléchargées automatiquement.</p>
+    </div>
+</body>
+
+</html>
