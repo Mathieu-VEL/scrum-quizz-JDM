@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.question-page {
+    display: none;
+}
+
+.timer {
+    font-weight: bold;
+    margin-top: 10px;
+}
