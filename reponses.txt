@@ -1,0 +1,9 @@
+Récapitulatif du Quiz:
+
+Question 1 : Votre réponse: Facile, Ensemble | Correction: Un ensemble d'au moins 12 caractères, de types différents
+Question 2 : Votre réponse: Aucun choix | Correction: Celui de ta messagerie
+Question 3 : Votre réponse: Aucun choix | Correction: Que le site utilise un protocole de navigation sécurisé, indispensable pour effectuer des achats
+Question 4 : Votre réponse: Aucun choix | Correction: Une action malveillante en direction d’un système ou d’un réseau informatique
+Question 5 : Votre réponse: Oui | Correction: Oui
+Question 6 : Votre réponse: Housse, Virus | Correction: En le mettant à jour régulièrement et en installant un anti-virus
+Question 7 : Votre réponse: Abonnement | Correction: Oui : les gars sont très très forts

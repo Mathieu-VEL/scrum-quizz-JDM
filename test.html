@@ -1,38 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
-    <title>Questionnaire par Page avec Timer</title>
+    <title>Questionnaire par Page avec Correction</title>
+    <link rel="stylesheet" href="style.css">
     <script src="./test.js" defer></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .question-page {
-            display: none;
-        }
-
-        .timer {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-    </style>
 </head>
-
 <body>
-
     <h1>Quiz avec Correction</h1>
 
     <!-- Page de la question 1 -->
     <div id="question1" class="question-page">
-        <p>1. Quels fruits aimez-vous ?</p>
-        <label><input type="checkbox" name="fruit" value="Pomme"> Pomme</label><br>
-        <label><input type="checkbox" name="fruit" value="Banane"> Banane</label><br>
-        <label><input type="checkbox" name="fruit" value="Orange"> Orange</label><br>
-        <label><input type="checkbox" name="fruit" value="Fraise"> Fraise</label>
+        <p>1. Qu’est-ce qu’un bon mot de passe ?</p>
+        <label><input type="checkbox" name="mot" value="Pareil">Le même que celui de ta moitié : moins de chance de l’oublier</label><br>
+        <label><input type="checkbox" name="mot" value="Facile">Un mot facile à retenir, comme « motdepasse »</label><br>
+        <label><input type="checkbox" name="mot" value="Suite">Une suite d’au moins 5 lettres ou 5 chiffres</label><br>
+        <label><input type="checkbox" name="mot" value="Ensemble">Un ensemble d'au moins 12 caractères, de types différents</label>
         <div id="timer1" class="timer"></div>
         <br>
         <button type="button" onclick="nextQuestion()">Valider</button>
@@ -40,21 +23,72 @@
 
     <!-- Page de la question 2 -->
     <div id="question2" class="question-page">
-        <p>2. Quels sports pratiquez-vous ?</p>
-        <label><input type="checkbox" name="sport" value="Football"> Football</label><br>
-        <label><input type="checkbox" name="sport" value="Basketball"> Basketball</label><br>
-        <label><input type="checkbox" name="sport" value="Natation"> Natation</label><br>
-        <label><input type="checkbox" name="sport" value="Cyclisme"> Cyclisme</label>
+        <p>2. Quel mot de passe requiert un maximum de sécurité ?</p>
+        <label><input type="checkbox" name="securite" value="Banque">Celui de ton compte en banque</label><br>
+        <label><input type="checkbox" name="securite" value="Messagerie">Celui de ta messagerie</label><br>
+        <label><input type="checkbox" name="securite" value="Abonnement">Celui de ton abonnement Netflix</label><br>
+        <label><input type="checkbox" name="securite" value="Important">Tous sont aussi importants</label>
         <div id="timer2" class="timer"></div>
         <br>
         <button type="button" onclick="nextQuestion()">Valider</button>
     </div>
 
-    <!-- Page finale -->
-    <div id="result" style="display:none;">
-        <h2>Merci d'avoir répondu !</h2>
-        <p>Vos réponses ont été enregistrées et téléchargées automatiquement.</p>
+    <!-- Page de la question 3 -->
+    <div id="question3" class="question-page">
+        <p>3. Qu'indique "https"?</p>
+        <label><input type="checkbox" name="site" value="Banque">Que le site a reçu le label « super », gage d’une navigation agréable</label><br>
+        <label><input type="checkbox" name="site" value="Messagerie">Que le site utilise un protocole de navigation sécurisé, indispensable pour effectuer des achats</label><br>
+        <label><input type="checkbox" name="site" value="Abonnement">Que le site est en fait une réunion de plusieurs sites, d’où le « s » à la fin</label>
+        <div id="timer3" class="timer"></div>
+        <br>
+        <button type="button" onclick="nextQuestion()">Valider</button>
     </div>
-</body>
 
+    <!-- Page de la question 4 -->
+    <div id="question4" class="question-page">
+        <p>4. Une « Cyber Attaque » c’est :</p>
+        <label><input type="checkbox" name="cyber" value="Matrix">Le titre du dernier Matrix</label><br>
+        <label><input type="checkbox" name="cyber" value="Electro">Le nom d’une compile d’électro</label><br>
+        <label><input type="checkbox" name="cyber" value="Malveillante">Une action malveillante en direction d’un système ou d’un réseau informatique</label>
+        <div id="timer4" class="timer"></div>
+        <br>
+        <button type="button" onclick="nextQuestion()">Valider</button>
+    </div>
+
+    <!-- Page de la question 5 -->
+    <div id="question5" class="question-page">
+        <p>5. Est-il risqué d’utiliser un Wi-Fi public gratuit ?</p>
+        <label><input type="checkbox" name="wifi" value="Oui">Oui</label><br>
+        <label><input type="checkbox" name="wifi" value="Non">Pas du tout, sinon on appellerait ça un non-fi</label><br>
+        <label><input type="checkbox" name="wifi" value="Passer">Je peux passer la question ?</label>
+        <div id="timer5" class="timer"></div>
+        <br>
+        <button type="button" onclick="nextQuestion()">Valider</button>
+    </div>
+
+    <!-- Page de la question 6 -->
+    <div id="question6" class="question-page">
+        <p>6. Je peux protéger l’accès à mon ordinateur ou à mon smartphone :</p>
+        <label><input type="checkbox" name="protect" value="Maison">En ne l’utilisant qu’à la maison, avec ma connexion personnelle</label><br>
+        <label><input type="checkbox" name="protect" value="Housse">En l’équipant d’une housse de qualité</label><br>
+        <label><input type="checkbox" name="protect" value="Virus">En le mettant à jour régulièrement et en installant un anti-virus</label>
+        <div id="timer6" class="timer"></div>
+        <br>
+        <button type="button" onclick="nextQuestion()">Valider</button>
+    </div>
+
+    <!-- Page de la question 7 -->
+    <div id="question7" class="question-page">
+        <p>7. Les cyberhackers peuvent-ils utiliser tes informations provenant de tes réseaux sociaux contre toi ?</p>
+        <label><input type="checkbox" name="hacker" value="Banque">Je ne sais pas, je n’en connais pas</label><br>
+        <label><input type="checkbox" name="hacker" value="Messagerie">Non : je ne suis pas assez débile pour mettre mes identifiants en ligne !</label><br>
+        <label><input type="checkbox" name="hacker" value="Abonnement">Oui : les gars sont très très forts</label>
+        <div id="timer7" class="timer"></div>
+        <br>
+        <button type="button" onclick="nextQuestion()">Valider</button>
+    </div>
+
+    <!-- Page finale -->
+    <div id="result" style="display:none;"></div>
+</body>
 </html>

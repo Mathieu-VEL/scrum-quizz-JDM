@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.question-page {
+    display: none;
+}
+
+.timer {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.correction {
+    margin-top: 10px;
+    font-weight: bold;
+    color: green;
+}
+
+.correctAnswer {
+  color: green;
+  font-weight: bold;
+}
+
+.wrongAnswer {
+  color: red;
+  font-weight: bold;
+}
