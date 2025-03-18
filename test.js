@@ -17,6 +17,17 @@ const correctAnswers = {
   7: "Oui : les gars sont très très forts"
 };
 
+// Mapping du numéro de question à la clé dans l'objet reponses
+const responseKeys = {
+  1: "mots",
+  2: "securites",
+  3: "sites",
+  4: "cybers",
+  5: "wifis",
+  6: "protects",
+  7: "hackers"
+};
+
 // Démarre le timer pour la question courante
 function startTimer() {
   let timeLeft = tempsParQuestion;
@@ -33,7 +44,7 @@ function startTimer() {
   }, 1000);
 }
 
-// Enregistre les réponses de la question courante
+// Enregistre les réponses de la question courante dans l'objet reponses
 function enregistrerReponses() {
   if (currentQuestion === 1) {
     const mots = Array.from(document.querySelectorAll('input[name="mot"]:checked'))
@@ -66,8 +77,7 @@ function enregistrerReponses() {
   }
 }
 
-// Affiche le feedback après validation
-// Seules les cases cochées dont la valeur correspond à la bonne réponse seront mises en évidence en vert.
+// Affiche le feedback après validation : seules les cases cochées dont la valeur correspond à la bonne réponse seront mises en évidence en vert.
 function afficherFeedback() {
   const inputs = document.querySelectorAll(`#question${currentQuestion} input[type="checkbox"]`);
   inputs.forEach(input => {
@@ -89,7 +99,7 @@ function nextQuestion() {
   // Récupérer le conteneur de la question actuelle
   const currentDiv = document.getElementById("question" + currentQuestion);
 
-  // Afficher la correction sous forme de texte (celle-ci est déjà stylée en vert via la classe "correction")
+  // Afficher la correction sous forme de texte (la classe "correction" affiche le texte en vert)
   const correctionDiv = document.createElement("div");
   correctionDiv.className = "correction";
   correctionDiv.innerHTML = "Réponse correcte : " + correctAnswers[currentQuestion];
@@ -102,13 +112,11 @@ function nextQuestion() {
   const btn = currentDiv.querySelector("button");
   btn.disabled = true;
 
-  // Attendre 5 secondes pour laisser le temps de consulter la correction et le feedback
+  // Attendre 5 secondes avant de passer à la question suivante
   setTimeout(() => {
-    // Masquer la page de la question actuelle
     currentDiv.style.display = "none";
     currentQuestion++;
     if (currentQuestion <= totalQuestions) {
-      // Afficher la page suivante et démarrer son timer
       const nextDiv = document.getElementById("question" + currentQuestion);
       nextDiv.style.display = "block";
       startTimer();
@@ -118,50 +126,74 @@ function nextQuestion() {
   }, 5000);
 }
 
-// Affiche la page finale avec le récapitulatif des réponses et corrections,
-// puis déclenche l'enregistrement automatique des réponses dans un fichier.
+// Affiche la page finale avec le récapitulatif du quiz et la note totale obtenue
 function afficherResultats() {
   const resultDiv = document.getElementById("result");
   resultDiv.style.display = "block";
-  
+
+  // Calcul de la note : la réponse est correcte si l'utilisateur a sélectionné exactement la bonne réponse (aucune autre)
+  let score = 0;
+  for (let i = 1; i <= totalQuestions; i++) {
+    const responses = reponses[responseKeys[i]];
+    if (responses && responses.length === 1 && responses[0] === correctAnswers[i]) {
+      score++;
+    }
+  }
+
   let summary = "<h2>Récapitulatif du Quiz</h2>";
-  summary += "<ul>";
-  summary += "<li>Question 1 : Votre réponse: " + (reponses.mots && reponses.mots.length ? reponses.mots.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[1] + "</li>";
-  summary += "<li>Question 2 : Votre réponse: " + (reponses.securites && reponses.securites.length ? reponses.securites.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[2] + "</li>";
-  summary += "<li>Question 3 : Votre réponse: " + (reponses.sites && reponses.sites.length ? reponses.sites.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[3] + "</li>";
-  summary += "<li>Question 4 : Votre réponse: " + (reponses.cybers && reponses.cybers.length ? reponses.cybers.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[4] + "</li>";
-  summary += "<li>Question 5 : Votre réponse: " + (reponses.wifis && reponses.wifis.length ? reponses.wifis.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[5] + "</li>";
-  summary += "<li>Question 6 : Votre réponse: " + (reponses.protects && reponses.protects.length ? reponses.protects.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[6] + "</li>";
-  summary += "<li>Question 7 : Votre réponse: " + (reponses.hackers && reponses.hackers.length ? reponses.hackers.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[7] + "</li>";
-  summary += "</ul>";
-  
+  summary += `<h3>Votre note : ${score} sur ${totalQuestions}</h3>`;
+
+  // Récapitulatif de chaque question
+  for (let i = 1; i <= totalQuestions; i++) {
+    const questionDiv = document.getElementById("question" + i);
+    const questionText = questionDiv.querySelector("p").innerText;
+    summary += `<div class="result-question"><h3>${questionText}</h3>`;
+    summary += "<ul>";
+    const labels = questionDiv.querySelectorAll("label");
+    labels.forEach(label => {
+      const input = label.querySelector("input[type='checkbox']");
+      if (input && input.checked) {
+        summary += `<li><input type="checkbox" checked disabled> ${label.innerText}</li>`;
+      }
+    });
+    summary += "</ul>";
+    summary += `<div class="correction">Réponse correcte : ${correctAnswers[i]}</div>`;
+    summary += `</div>`;
+  }
   resultDiv.innerHTML = summary;
-  
-  // Générer et télécharger le fichier contenant le récapitulatif (texte brut)
-  genererEtTelechargerFichier();
+
+  // Générer et télécharger le fichier contenant le récapitulatif (texte brut) en passant le score
+  genererEtTelechargerFichier(score);
 }
 
-// Génère un fichier texte avec le récapitulatif et déclenche le téléchargement automatique
-function genererEtTelechargerFichier() {
+// Génère un fichier texte avec le récapitulatif et déclenche son téléchargement
+function genererEtTelechargerFichier(score) {
   let contenuText = "Récapitulatif du Quiz:\n\n";
-  contenuText += "Question 1 : Votre réponse: " + ((reponses.mots && reponses.mots.length) ? reponses.mots.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[1] + "\n";
-  contenuText += "Question 2 : Votre réponse: " + ((reponses.securites && reponses.securites.length) ? reponses.securites.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[2] + "\n";
-  contenuText += "Question 3 : Votre réponse: " + ((reponses.sites && reponses.sites.length) ? reponses.sites.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[3] + "\n";
-  contenuText += "Question 4 : Votre réponse: " + ((reponses.cybers && reponses.cybers.length) ? reponses.cybers.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[4] + "\n";
-  contenuText += "Question 5 : Votre réponse: " + ((reponses.wifis && reponses.wifis.length) ? reponses.wifis.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[5] + "\n";
-  contenuText += "Question 6 : Votre réponse: " + ((reponses.protects && reponses.protects.length) ? reponses.protects.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[6] + "\n";
-  contenuText += "Question 7 : Votre réponse: " + ((reponses.hackers && reponses.hackers.length) ? reponses.hackers.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[7] + "\n";
+  for (let i = 1; i <= totalQuestions; i++) {
+    const questionDiv = document.getElementById("question" + i);
+    const questionText = questionDiv.querySelector("p").innerText;
+    contenuText += questionText + "\n";
+    const labels = questionDiv.querySelectorAll("label");
+    labels.forEach(label => {
+      const input = label.querySelector("input[type='checkbox']");
+      if (input && input.checked) {
+        contenuText += "  [X] " + label.innerText + "\n";
+      }
+    });
+    contenuText += "Réponse correcte : " + correctAnswers[i] + "\n\n";
+  }
+  contenuText += `Note : ${score} sur ${totalQuestions}\n`;
 
   const blob = new Blob([contenuText], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
-  
+
   const a = document.createElement("a");
   a.href = url;
   a.download = "reponses.txt";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  
+
   URL.revokeObjectURL(url);
 }
 
