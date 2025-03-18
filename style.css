@@ -2,12 +2,53 @@ body {
     font-family: Arial, sans-serif;
     margin: 20px;
 }
+.quiz-container {
+  max-width: 800px;
+  background-color: #f3f3f3;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+h1 {
+  color: blueviolet;
+  text-align: center;
+}
+
+.bouton {
+  background-color: #71c550;
+  border: 0;
+  padding: 8px;
+  text-transform: uppercase;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.bouton:hover {
+  background-color: #45bd16;
+  color: white;
+}
 
 .question-page {
     display: none;
 }
 
 .timer {
-    font-weight: bold;
     margin-top: 10px;
+    color: rgb(253, 93, 93);
+}
+
+.correction {
+    margin-top: 10px;
+    color: rgb(47, 175, 47);
+}
+
+.correctAnswer {
+  color: green;
+  font-weight: bold;
+}
+
+.wrongAnswer {
+  color: red;
+  font-weight: bold;
 }

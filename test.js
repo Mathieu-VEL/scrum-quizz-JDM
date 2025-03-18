@@ -66,8 +66,21 @@ function enregistrerReponses() {
   }
 }
 
+// Affiche le feedback après validation
+// Seules les cases cochées dont la valeur correspond à la bonne réponse seront mises en évidence en vert.
+function afficherFeedback() {
+  const inputs = document.querySelectorAll(`#question${currentQuestion} input[type="checkbox"]`);
+  inputs.forEach(input => {
+    const label = input.parentElement;
+    // Réinitialiser les classes existantes
+    label.classList.remove("correctAnswer", "wrongAnswer");
+    if (input.checked && input.value === correctAnswers[currentQuestion]) {
+      label.classList.add("correctAnswer");
+    }
+  });
+}
 
-// Passe à la question suivante après avoir affiché la correction
+// Passe à la question suivante après validation
 function nextQuestion() {
   clearInterval(timerInterval);
   // Enregistrer la réponse de la question en cours
@@ -76,17 +89,20 @@ function nextQuestion() {
   // Récupérer le conteneur de la question actuelle
   const currentDiv = document.getElementById("question" + currentQuestion);
 
-  // Créer et afficher le message de correction
+  // Afficher la correction sous forme de texte (celle-ci est déjà stylée en vert via la classe "correction")
   const correctionDiv = document.createElement("div");
   correctionDiv.className = "correction";
   correctionDiv.innerHTML = "Réponse correcte : " + correctAnswers[currentQuestion];
   currentDiv.appendChild(correctionDiv);
 
+  // Afficher le feedback sur les choix après validation
+  afficherFeedback();
+
   // Désactiver le bouton pour éviter plusieurs clics
   const btn = currentDiv.querySelector("button");
   btn.disabled = true;
 
-  // Attendre 5 secondes pour laisser le temps de consulter la correction
+  // Attendre 5 secondes pour laisser le temps de consulter la correction et le feedback
   setTimeout(() => {
     // Masquer la page de la question actuelle
     currentDiv.style.display = "none";
@@ -102,27 +118,43 @@ function nextQuestion() {
   }, 5000);
 }
 
-// Affiche la page finale et déclenche l'enregistrement automatique des réponses
+// Affiche la page finale avec le récapitulatif des réponses et corrections,
+// puis déclenche l'enregistrement automatique des réponses dans un fichier.
 function afficherResultats() {
-  document.getElementById("result").style.display = "block";
+  const resultDiv = document.getElementById("result");
+  resultDiv.style.display = "block";
+  
+  let summary = "<h2>Récapitulatif du Quiz</h2>";
+  summary += "<ul>";
+  summary += "<li>Question 1 : Votre réponse: " + (reponses.mots && reponses.mots.length ? reponses.mots.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[1] + "</li>";
+  summary += "<li>Question 2 : Votre réponse: " + (reponses.securites && reponses.securites.length ? reponses.securites.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[2] + "</li>";
+  summary += "<li>Question 3 : Votre réponse: " + (reponses.sites && reponses.sites.length ? reponses.sites.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[3] + "</li>";
+  summary += "<li>Question 4 : Votre réponse: " + (reponses.cybers && reponses.cybers.length ? reponses.cybers.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[4] + "</li>";
+  summary += "<li>Question 5 : Votre réponse: " + (reponses.wifis && reponses.wifis.length ? reponses.wifis.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[5] + "</li>";
+  summary += "<li>Question 6 : Votre réponse: " + (reponses.protects && reponses.protects.length ? reponses.protects.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[6] + "</li>";
+  summary += "<li>Question 7 : Votre réponse: " + (reponses.hackers && reponses.hackers.length ? reponses.hackers.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[7] + "</li>";
+  summary += "</ul>";
+  
+  resultDiv.innerHTML = summary;
+  
+  // Générer et télécharger le fichier contenant le récapitulatif (texte brut)
   genererEtTelechargerFichier();
 }
 
-// Génère un fichier texte avec les réponses et déclenche le téléchargement automatique
+// Génère un fichier texte avec le récapitulatif et déclenche le téléchargement automatique
 function genererEtTelechargerFichier() {
-  let contenu = "Réponses du questionnaire:\n\n";
-  contenu += "Mot de pass : " + (reponses.mots && reponses.mots.length ? reponses.mots.join(", ") : "Aucun choix") + "\n";
-  contenu += "Max de sécurité : " + (reponses.securites && reponses.securites.length ? reponses.securites.join(", ") : "Aucun choix") + "\n";
-  contenu += "Https : " + (reponses.sites && reponses.sites.length ? reponses.sites.join(", ") : "Aucun choix") + "\n";
-  contenu += "Cyber Attaque : " + (reponses.cybers && reponses.cybers.length ? reponses.cybers.join(", ") : "Aucun choix") + "\n";
-  contenu += "Wifi dangereux : " + (reponses.wifis && reponses.wifis.length ? reponses.wifis.join(", ") : "Aucun choix") + "\n";
-  contenu += "Protection Smartphone et Ordinateur : " + (reponses.protects && reponses.protects.length ? reponses.protects.join(", ") : "Aucun choix") + "\n";
-  contenu += "Cyberhackers utilisent des infos contre toi : " + (reponses.hackers && reponses.hackers.length ? reponses.hackers.join(", ") : "Aucun choix") + "\n";
+  let contenuText = "Récapitulatif du Quiz:\n\n";
+  contenuText += "Question 1 : Votre réponse: " + ((reponses.mots && reponses.mots.length) ? reponses.mots.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[1] + "\n";
+  contenuText += "Question 2 : Votre réponse: " + ((reponses.securites && reponses.securites.length) ? reponses.securites.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[2] + "\n";
+  contenuText += "Question 3 : Votre réponse: " + ((reponses.sites && reponses.sites.length) ? reponses.sites.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[3] + "\n";
+  contenuText += "Question 4 : Votre réponse: " + ((reponses.cybers && reponses.cybers.length) ? reponses.cybers.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[4] + "\n";
+  contenuText += "Question 5 : Votre réponse: " + ((reponses.wifis && reponses.wifis.length) ? reponses.wifis.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[5] + "\n";
+  contenuText += "Question 6 : Votre réponse: " + ((reponses.protects && reponses.protects.length) ? reponses.protects.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[6] + "\n";
+  contenuText += "Question 7 : Votre réponse: " + ((reponses.hackers && reponses.hackers.length) ? reponses.hackers.join(", ") : "Aucun choix") + " | Correction: " + correctAnswers[7] + "\n";
 
-  const blob = new Blob([contenu], { type: "text/plain" });
+  const blob = new Blob([contenuText], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   
-  // Création d'un lien temporaire pour déclencher le téléchargement
   const a = document.createElement("a");
   a.href = url;
   a.download = "reponses.txt";
@@ -130,11 +162,10 @@ function genererEtTelechargerFichier() {
   a.click();
   document.body.removeChild(a);
   
-  // Libération de l'URL créée
   URL.revokeObjectURL(url);
 }
 
-// Au chargement de la page, affiche la première question et démarre le timer
+// Au chargement de la page, affiche la première question et démarre le timer.
 window.onload = function() {
   document.getElementById("question" + currentQuestion).style.display = "block";
   startTimer();
